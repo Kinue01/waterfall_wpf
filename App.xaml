@@ -1,0 +1,30 @@
+﻿<Application x:Class="waterfall_wpf.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:waterfall_wpf.ViewModel"
+             xmlns:page="clr-namespace:waterfall_wpf.Pages"
+             xmlns:local="clr-namespace:waterfall_wpf">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary>
+                    <DataTemplate DataType="{x:Type TypeName=vm:CashierViewModel}">
+                        <page:CashierMainPage />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type TypeName=vm:CheckerViewModel}">
+                        <page:CheckerMainPage />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type TypeName=vm:AuthViewModel}">
+                        <page:AuthPage />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type TypeName=vm:AddTicketViewModel}">
+                        <page:AddTicketPage />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type TypeName=vm:AddClientViewModel}">
+                        <page:AddClientPage />
+                    </DataTemplate>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

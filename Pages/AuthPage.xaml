@@ -1,0 +1,40 @@
+﻿<Page x:Class="waterfall_wpf.Pages.AuthPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:waterfall_wpf.Pages"
+      mc:Ignorable="d" 
+      Background="White"
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="AuthPage">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="5*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Авторизация" HorizontalAlignment="Center" VerticalAlignment="Center"  />
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="Логин" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <TextBox Grid.Column="1" Text="{Binding Login}" />
+
+            <TextBlock Grid.Row="1" Text="Пароль" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Password}" />
+
+            <Button Grid.Row="2" Content="Войти" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding AuthCommand}" />
+        </Grid>
+    </Grid>
+</Page>
