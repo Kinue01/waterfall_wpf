@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
 using System.Windows;
-using System.Windows.Input;
 using waterfall_wpf.Model;
 using waterfall_wpf.Utils;
 
@@ -51,12 +50,13 @@ namespace waterfall_wpf.ViewModel
                         _navigationService.NavigateTo<CheckerViewModel>();
                         break;
                     default:
+                        MessageBox.Show("Нет такой должности");
                         break;
                 }
             }
             else
             {
-                MessageBox.Show("Нет пользователя");
+                MessageBox.Show("Нет такого пользователя");
             }
         }
 

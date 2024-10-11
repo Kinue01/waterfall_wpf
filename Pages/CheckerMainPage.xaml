@@ -24,34 +24,49 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
         <StackPanel VerticalAlignment="Center">
             <TextBlock Text="Номер" />
-            <TextBox Text="{Binding TicketId}" />
-            <Button Content="Проверить" Command="{Binding CheckTicketCommand}" />
-            <Separator />
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-
-                <StackPanel>
-                    <TextBlock Text="Фамилия" />
-                    <TextBox Text="{Binding Lastname}" />
-                </StackPanel>
-
-                <StackPanel Grid.Column="1">
-                    <TextBlock Text="Имя" />
-                    <TextBox Text="{Binding Firstname}" />
-                </StackPanel>
-            </Grid>
+            <TextBox Text="{Binding Ticket, UpdateSourceTrigger=PropertyChanged}" />
         </StackPanel>
 
-        <TextBlock x:Name="TextBlock" Text="{Binding Result}" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{Binding resStyle}" />
+        <Button Content="Проверить" Command="{Binding CheckTicketCommand}" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" />
+
+        <Grid Grid.Column="1" VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <StackPanel>
+                <TextBlock Text="Фамилия" />
+                <TextBlock Text="{Binding Lastname}" />
+            </StackPanel>
+
+            <StackPanel Grid.Column="1">
+                <TextBlock Text="Имя" />
+                <TextBlock Text="{Binding Firstname}" />
+            </StackPanel>
+
+            <StackPanel Grid.Row="1">
+                <TextBlock Text="Дата" />
+                <TextBlock Text="{Binding Date}" />
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" Grid.Row="1">
+                <TextBlock Text="Время" />
+                <TextBlock Text="{Binding Time}" />
+            </StackPanel>
+        </Grid>
+
+        <TextBlock x:Name="TextBlock" Text="{Binding Result}" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource resStyle}" />
     </Grid>
 </Page>

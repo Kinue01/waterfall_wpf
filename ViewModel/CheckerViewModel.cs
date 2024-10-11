@@ -7,13 +7,15 @@ namespace waterfall_wpf.ViewModel
 {
     public class CheckerViewModel : ObservableObject
     {
-        string ticketId, lastname, firstname, result;
+        string ticket, lastname, firstname, result;
+        DateTime date;
+        TimeOnly time;
         IDbContextFactory<WaterfallDbContext> _dbContextFactory;
 
-        public string TicketId
+        public string Ticket
         {
-            get => ticketId;
-            set => SetProperty(ref ticketId, value);
+            get => ticket;
+            set => SetProperty(ref ticket, value);
         }
         public string Lastname
         {
@@ -30,6 +32,16 @@ namespace waterfall_wpf.ViewModel
             get => result;
             set => SetProperty(ref result, value);
         }
+        public DateTime Date
+        {
+            get => date;
+            set => SetProperty(ref date, value);
+        }
+        public TimeOnly Time
+        {
+            get => time;
+            set => SetProperty(ref time, value);
+        }
 
         public IAsyncRelayCommand CheckTicketCommand { get; set; }
 
@@ -43,11 +55,13 @@ namespace waterfall_wpf.ViewModel
         async Task CheckTicket()
         {
             using var context = await _dbContextFactory.CreateDbContextAsync();
-            var res = await context.TbTickets.Include(t => t.TicketClient).Include(t => t.TicketSession).Where(u => u.TicketId == int.Parse(TicketId)).ToListAsync();
+            var res = await context.TbTickets.Include(t => t.TicketClient).Include(t => t.TicketSession).Where(u => u.TicketId == int.Parse(Ticket)).ToListAsync();
             if (res != null && res[0] != null)
             {
                 Lastname = res[0].TicketClient.ClientLastname;
                 Firstname = res[0].TicketClient.ClientFirstname;
+                Date = res[0].TicketDate.ToDateTime(TimeOnly.MinValue);
+                Time = res[0].TicketSession.SessionTime;
 
                 if (res[0].TicketChecked)
                 {
@@ -56,7 +70,7 @@ namespace waterfall_wpf.ViewModel
                 else
                 {
                     Result = "Проход разрешён";
-                    await context.TbTickets.Where(t => t.TicketId == int.Parse(TicketId)).ExecuteUpdateAsync(s => s.SetProperty(u => u.TicketChecked, true));
+                    await context.TbTickets.Where(t => t.TicketId == int.Parse(Ticket)).ExecuteUpdateAsync(s => s.SetProperty(u => u.TicketChecked, true));
                 }
 
                 if (res[0].TicketDate == DateOnly.FromDateTime(DateTime.Now) && TimeOnly.FromTimeSpan(res[0].TicketSession.SessionTime - TimeOnly.FromDateTime(DateTime.Now)) < TimeOnly.Parse("10:00"))

@@ -17,22 +17,22 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <StackPanel>
+        <StackPanel VerticalAlignment="Center">
             <TextBlock Text="Клиент" />
             <ComboBox ItemsSource="{Binding Clients}" SelectedItem="{Binding CurrClient}" />
         </StackPanel>
 
-        <StackPanel Grid.Column="1">
+        <StackPanel VerticalAlignment="Center" Grid.Column="1">
             <TextBlock Text="Сеанс" />
             <ComboBox ItemsSource="{Binding Sessions}" SelectedItem="{Binding CurrSession}" />
         </StackPanel>
 
-        <StackPanel Grid.Row="1">
+        <StackPanel VerticalAlignment="Center" Grid.Row="1">
             <TextBlock Text="Тип" />
             <ComboBox ItemsSource="{Binding Types}" SelectedItem="{Binding CurrType}" />
         </StackPanel>
 
-        <StackPanel Grid.Column="1" Grid.Row="1">
+        <StackPanel VerticalAlignment="Center" Grid.Column="1" Grid.Row="1">
             <TextBlock Text="Дата" />
             <DatePicker SelectedDate="{Binding Date}" />
         </StackPanel>
