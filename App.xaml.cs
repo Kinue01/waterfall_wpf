@@ -35,6 +35,7 @@ namespace waterfall_wpf
             services.AddSingleton<QRCodeEncoder>();
 
             services.AddSingleton<INavigationService, NavigationService>();
+            services.AddSingleton<IDialogService, DialogService>();
 
             services.AddPooledDbContextFactory<WaterfallDbContext>(options => options.UseNpgsql("Host=172.20.105.123;Port=5432;Database=waterfall_db;Username=9po12-21-16;Password=ki9boh3Y"));
 

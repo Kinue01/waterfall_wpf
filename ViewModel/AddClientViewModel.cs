@@ -1,5 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
@@ -8,7 +7,7 @@ using waterfall_wpf.Utils;
 
 namespace waterfall_wpf.ViewModel
 {
-    class AddClientViewModel : ObservableObject
+    public class AddClientViewModel : DialogViewModelBase<DialogResult>
     {
         string login, password, lastname, firstname, middlename, email;
         ObservableCollection<TbCountry> countries;
@@ -65,11 +64,21 @@ namespace waterfall_wpf.ViewModel
             _dbContextFactory = dbContextFactory;
             _navigationService = navigationService;
 
-            AddClientCommand = new AsyncRelayCommand(AddClient);
-            NavigateAuthCommand = new RelayCommand(_navigationService.NavigateTo<AuthViewModel>);
+            AddClientCommand = new AsyncRelayCommand<IDialogWindow>(AddClient);
+            NavigateAuthCommand = new RelayCommand<IDialogWindow>(Cancel);
         }
 
-        async Task AddClient()
+        async Task GetCountries()
+        {
+            Countries = [];
+            using var context = await _dbContextFactory.CreateDbContextAsync();
+            var counries = context.TbCountries.AsAsyncEnumerable();
+            await foreach (var coun in counries)
+            {
+                Countries.Add(coun);
+            }
+        }
+        async Task AddClient(IDialogWindow window)
         {
             using var context = await _dbContextFactory.CreateDbContextAsync();
             var user = await context.TbUsers.AddAsync(new TbUser
@@ -88,7 +97,11 @@ namespace waterfall_wpf.ViewModel
                 ClientUserId = user.Entity.UserId,
             });
             await context.SaveChangesAsync();
-            _navigationService.NavigateTo<AuthViewModel>();
+            CloseDialogWithResult(window, DialogResult.OK);
+        }
+        void Cancel(IDialogWindow window)
+        {
+            CloseDialogWithResult(window, DialogResult.Cancel);
         }
     }
 }

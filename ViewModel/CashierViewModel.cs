@@ -14,6 +14,9 @@ namespace waterfall_wpf.ViewModel
         INavigationService _navigationService;
         IDbContextFactory<WaterfallDbContext> _dbContextFactory;
         DateTime startDate, endDate, currDate;
+        IDialogService dialogService;
+        AddTicketViewModel addTicketViewModel;
+        SessionTable currSession;
 
         public ObservableCollection<SessionTable> Sessions
         {
@@ -35,20 +38,27 @@ namespace waterfall_wpf.ViewModel
             get => currDate;
             set => SetProperty(ref currDate, value);
         }
+        public SessionTable CurrSession
+        {
+            get => currSession;
+            set => SetProperty(ref currSession, value);
+        }
 
-        public ICommand NavigateAddTicketCommand { get; set; }
+        public IAsyncRelayCommand NavigateAddTicketCommand { get; set; }
         public IAsyncRelayCommand GetSessionsCommand { get; set; }
 
-        public CashierViewModel(INavigationService navigationService, IDbContextFactory<WaterfallDbContext> dbContextFactory)
+        public CashierViewModel(INavigationService navigationService, IDbContextFactory<WaterfallDbContext> dbContextFactory, IDialogService dialogService, AddTicketViewModel addTicketViewModel)
         {
             _navigationService = navigationService;
             _dbContextFactory = dbContextFactory;
+            this.dialogService = dialogService;
+            this.addTicketViewModel = addTicketViewModel;
 
             StartDate = DateTime.Now;
             EndDate = DateTime.Now.AddMonths(1);
             CurrDate = DateTime.Now;
 
-            NavigateAddTicketCommand = new RelayCommand(_navigationService.NavigateTo<AddTicketViewModel>);
+            NavigateAddTicketCommand = new AsyncRelayCommand(OpenAddTicket);
             GetSessionsCommand = new AsyncRelayCommand(GetSessions);
 
             new Action(async () =>
@@ -77,6 +87,11 @@ namespace waterfall_wpf.ViewModel
                     TicketCount = 15 - item.Count
                 });
             }
+        }
+        async Task OpenAddTicket()
+        {
+            dialogService.OpenDialog(addTicketViewModel, CurrDate, CurrSession.SessionTime);
+            await GetSessions();
         }
     }
 }

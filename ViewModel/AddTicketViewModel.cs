@@ -15,7 +15,7 @@ using waterfall_wpf.Utils;
 
 namespace waterfall_wpf.ViewModel
 {
-    public class AddTicketViewModel : ObservableObject
+    public class AddTicketViewModel : DialogViewModelBase<DialogResult>
     {
         ObservableCollection<TbClient> clients;
         ObservableCollection<TbSession> sessions;
@@ -26,6 +26,8 @@ namespace waterfall_wpf.ViewModel
         TbTicketType currTicketType;
         IDbContextFactory<WaterfallDbContext> _dbContextFactory;
         QRCodeEncoder encoder;
+        IDialogService dialogService;
+        AddClientViewModel addClientViewModel;
 
         public ObservableCollection<TbClient> Clients
         {
@@ -42,7 +44,7 @@ namespace waterfall_wpf.ViewModel
             get => ticketTypes; 
             set => SetProperty(ref ticketTypes, value);
         }
-        public DateOnly Date
+        public DateOnly CurrDate
         {
             get => date; 
             set => SetProperty(ref date, value);
@@ -65,15 +67,20 @@ namespace waterfall_wpf.ViewModel
 
         public IAsyncRelayCommand AddTicketCommand { get; set; }
         public ICommand NavigateAddClientCommand { get; set; }
+        public ICommand Cancel { get; set; }
 
-        public AddTicketViewModel(IDbContextFactory<WaterfallDbContext> dbContextFactory, INavigationService navigationService, QRCodeEncoder qr)
+        public AddTicketViewModel(IDbContextFactory<WaterfallDbContext> dbContextFactory, INavigationService navigationService, QRCodeEncoder qr, IDialogService dialogService, AddClientViewModel addClientViewModel)
         {
             _dbContextFactory = dbContextFactory;
             encoder = qr;
             encoder.QRCodeScale = 8;
+            this.dialogService = dialogService;
+            this.addClientViewModel = addClientViewModel;
+            CurrDate = DateOnly.FromDateTime(Date);
 
-            AddTicketCommand = new AsyncRelayCommand(AddTicket);
-            NavigateAddClientCommand = new RelayCommand(navigationService.NavigateTo<AddClientViewModel>);
+            AddTicketCommand = new AsyncRelayCommand<IDialogWindow>(AddTicket);
+            NavigateAddClientCommand = new RelayCommand(OpenAddClient);
+            Cancel = new RelayCommand<IDialogWindow>(CancelDialog);
 
             new Action(async () =>
             {
@@ -85,6 +92,7 @@ namespace waterfall_wpf.ViewModel
 
         async Task GetClients()
         {
+            Clients = [];
             using var context = await _dbContextFactory.CreateDbContextAsync();
             var clients = context.TbClients.AsAsyncEnumerable();
             await foreach (var client in clients)
@@ -94,15 +102,18 @@ namespace waterfall_wpf.ViewModel
         }
         async Task GetSessions()
         {
+            Sessions = [];
             using var context = await _dbContextFactory.CreateDbContextAsync();
             var sessions = context.TbSessions.AsAsyncEnumerable();
             await foreach (var session in sessions)
             {
                 Sessions.Add(session);
             }
+            CurrSession = Sessions.Where(s => s.SessionTime == Time).First();
         }
         async Task GetTypes()
         {
+            Types = [];
             using var context = await _dbContextFactory.CreateDbContextAsync();
             var types = context.TbTicketTypes.AsAsyncEnumerable();
             await foreach (var type in types)
@@ -110,13 +121,13 @@ namespace waterfall_wpf.ViewModel
                 Types.Add(type);
             }
         }
-        async Task AddTicket()
+        async Task AddTicket(IDialogWindow window)
         {
             using var context = await _dbContextFactory.CreateDbContextAsync();
             await context.TbTickets.AddAsync(new TbTicket
             {
                 TicketClientId = CurrClient.ClientId,
-                TicketDate = Date,
+                TicketDate = CurrDate,
                 TicketSessionId = CurrSession.SessionId,
                 TicketTypeId = CurrType.TypeId
             });
@@ -153,6 +164,15 @@ namespace waterfall_wpf.ViewModel
             {
                 printDialog.PrintDocument(((IDocumentPaginatorSource)doc).DocumentPaginator, "PDF");
             }
+            CloseDialogWithResult(window, DialogResult.OK);
+        }
+        void OpenAddClient()
+        {
+            dialogService.OpenDialog(addClientViewModel, DateTime.MinValue, TimeOnly.MinValue);
+        }
+        void CancelDialog(IDialogWindow window)
+        {
+            CloseDialogWithResult(window, DialogResult.Cancel);
         }
     }
 }

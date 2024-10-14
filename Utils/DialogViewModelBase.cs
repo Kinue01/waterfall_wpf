@@ -2,15 +2,20 @@
 
 namespace waterfall_wpf.Utils
 {
-    public class DialogViewModelBase : ObservableObject
+    public class DialogViewModelBase<T> : ObservableObject
     {
         public DateTime Date { get; set; }
         public TimeOnly Time { get; set; }
+        public T DialogResult { get; set; }
 
-        public DialogViewModelBase(DateTime date, TimeOnly time)
+        public void CloseDialogWithResult(IDialogWindow dialog, T result)
         {
-            Date = date;
-            Time = time;
+            DialogResult = result;
+
+            if (dialog != null)
+            {
+                dialog.DialogResult = true;
+            }
         }
     }
 }

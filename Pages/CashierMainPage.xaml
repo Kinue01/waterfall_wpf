@@ -18,7 +18,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <DataGrid ItemsSource="{Binding Sessions}" Grid.RowSpan="2" Grid.ColumnSpan="2" AutoGenerateColumns="False">
+        <DataGrid SelectedItem="{Binding CurrSession}" ItemsSource="{Binding Sessions}" Grid.RowSpan="2" Grid.ColumnSpan="2" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Время" Binding="{Binding SessionTime}" />
                 <DataGridTextColumn Header="Кол-во свободных мест" Binding="{Binding TicketCount}" />
