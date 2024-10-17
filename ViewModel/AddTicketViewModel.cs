@@ -67,7 +67,7 @@ namespace waterfall_wpf.ViewModel
         }
 
         public IAsyncRelayCommand AddTicketCommand { get; set; }
-        public ICommand NavigateAddClientCommand { get; set; }
+        public IAsyncRelayCommand NavigateAddClientCommand { get; set; }
         public ICommand Cancel { get; set; }
 
         public AddTicketViewModel(IDbContextFactory<WaterfallDbContext> dbContextFactory, INavigationService navigationService, QRCodeEncoder qr, IDialogService dialogService, AddClientViewModel addClientViewModel)
@@ -80,7 +80,7 @@ namespace waterfall_wpf.ViewModel
             CurrDate = DateOnly.FromDateTime(Date);
 
             AddTicketCommand = new AsyncRelayCommand<IDialogWindow>(AddTicket);
-            NavigateAddClientCommand = new RelayCommand(OpenAddClient);
+            NavigateAddClientCommand = new AsyncRelayCommand(OpenAddClient);
             Cancel = new RelayCommand<IDialogWindow>(CancelDialog);
 
             WeakReferenceMessenger.Default.Register<TimeMessenger>(this, (r, m) =>
@@ -171,9 +171,12 @@ namespace waterfall_wpf.ViewModel
             }
             CloseDialogWithResult(window, DialogResult.OK);
         }
-        void OpenAddClient()
+        async Task OpenAddClient()
         {
-            dialogService.OpenDialog(addClientViewModel, DateTime.MinValue, TimeOnly.MinValue);
+            if (dialogService.OpenDialog(addClientViewModel, DateTime.MinValue, TimeOnly.MinValue) == DialogResult.OK)
+            {
+                await GetClients();
+            }
         }
         void CancelDialog(IDialogWindow window)
         {
