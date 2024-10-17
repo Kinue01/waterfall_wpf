@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using MessagingToolkit.QRCode.Codec;
@@ -82,6 +83,11 @@ namespace waterfall_wpf.ViewModel
             NavigateAddClientCommand = new RelayCommand(OpenAddClient);
             Cancel = new RelayCommand<IDialogWindow>(CancelDialog);
 
+            WeakReferenceMessenger.Default.Register<TimeMessenger>(this, (r, m) =>
+            {
+                CurrSession = Sessions.Where(s => s.SessionTime == m.Value).FirstOrDefault();
+            });
+
             new Action(async () =>
             {
                 await GetClients();
@@ -109,7 +115,6 @@ namespace waterfall_wpf.ViewModel
             {
                 Sessions.Add(session);
             }
-            CurrSession = Sessions.Where(s => s.SessionTime == Time).First();
         }
         async Task GetTypes()
         {

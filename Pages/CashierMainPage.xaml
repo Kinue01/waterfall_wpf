@@ -10,29 +10,25 @@
       Title="CashierMainPage">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="4*" />
+            <ColumnDefinition Width="3*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="5*" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
 
-        <DataGrid SelectedItem="{Binding CurrSession}" ItemsSource="{Binding Sessions}" Grid.RowSpan="2" Grid.ColumnSpan="2" AutoGenerateColumns="False">
+        <DataGrid FontSize="22" SelectedItem="{Binding CurrSession}" ItemsSource="{Binding Sessions}" AutoGenerateColumns="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Время" Binding="{Binding SessionTime}" />
+                <DataGridTextColumn Header="Время" Binding="{Binding SessionTime, StringFormat=HH:mm}" />
                 <DataGridTextColumn Header="Кол-во свободных мест" Binding="{Binding TicketCount}" />
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="+" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Page}, Path=DataContext.NavigateAddTicketCommand}" />
+                            <Button Width="50" Content="+" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Page}, Path=DataContext.NavigateAddTicketCommand}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
 
-        <DatePicker Background="White" DisplayDateStart="{Binding StartDate}" DisplayDateEnd="{Binding EndDate}" Grid.Row="1" Grid.Column="1" SelectedDate="{Binding CurrDate}">
+        <DatePicker Margin="10" FontSize="22" VerticalAlignment="Center" Background="White" DisplayDateStart="{Binding StartDate}" DisplayDateEnd="{Binding EndDate}" Grid.Column="1" SelectedDate="{Binding CurrDate}">
             <Behaviors:Interaction.Triggers>
                 <Behaviors:EventTrigger EventName="SelectedDateChanged">
                     <Behaviors:InvokeCommandAction Command="{Binding GetSessionsCommand}" />

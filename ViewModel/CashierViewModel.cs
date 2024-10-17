@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
@@ -78,7 +79,7 @@ namespace waterfall_wpf.ViewModel
                             Count = context.TbTickets.Where(t => t.TicketSessionId == session.SessionId).Where(t => t.TicketDate == DateOnly.FromDateTime(CurrDate)).Count(),
                         };
 
-            var result = query.OrderBy(r => r.SessionTime).AsAsyncEnumerable();
+            var result = query.AsAsyncEnumerable();
             await foreach (var item in result)
             {
                 Sessions.Add(new SessionTable
@@ -90,6 +91,7 @@ namespace waterfall_wpf.ViewModel
         }
         async Task OpenAddTicket()
         {
+            WeakReferenceMessenger.Default.Send(new TimeMessenger(CurrSession.SessionTime));
             dialogService.OpenDialog(addTicketViewModel, CurrDate, CurrSession.SessionTime);
             await GetSessions();
         }

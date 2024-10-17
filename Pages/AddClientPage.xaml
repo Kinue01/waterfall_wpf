@@ -18,42 +18,42 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <StackPanel>
-            <TextBlock Text="Логин" />
-            <TextBox Text="{Binding Login}" />
+        <StackPanel VerticalAlignment="Center" Margin="10">
+            <TextBlock Text="Логин" FontSize="22" />
+            <TextBox Text="{Binding Login}" FontSize="22" />
         </StackPanel>
 
-        <StackPanel Grid.Row="1">
-            <TextBlock Text="Пароль" />
-            <TextBox Text="{Binding Password}" />
+        <StackPanel Grid.Row="1" VerticalAlignment="Center" Margin="10">
+            <TextBlock Text="Пароль" FontSize="22" />
+            <TextBox Text="{Binding Password}" FontSize="22" />
         </StackPanel>
 
-        <StackPanel Grid.Column="2">
-            <TextBlock Text="Фамилия" />
-            <TextBox Text="{Binding Lastname}" />
+        <StackPanel Grid.Column="2" VerticalAlignment="Center" Margin="10">
+            <TextBlock Text="Фамилия" FontSize="22" />
+            <TextBox Text="{Binding Lastname}" FontSize="22" />
         </StackPanel>
 
-        <StackPanel Grid.Column="2" Grid.Row="1">
-            <TextBlock Text="Имя" />
-            <TextBox Text="{Binding Firstname}" />
+        <StackPanel Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" Margin="10">
+            <TextBlock Text="Имя" FontSize="22" />
+            <TextBox Text="{Binding Firstname}" FontSize="22" />
         </StackPanel>
 
-        <StackPanel Grid.Column="2" Grid.Row="2">
-            <TextBlock Text="Отчество" />
-            <TextBox Text="{Binding Middlename}" />
+        <StackPanel Grid.Column="2" Grid.Row="2" VerticalAlignment="Center" Margin="10">
+            <TextBlock Text="Отчество" FontSize="22" />
+            <TextBox Text="{Binding Middlename}" FontSize="22" />
         </StackPanel>
 
-        <StackPanel Grid.Column="1">
-            <TextBlock Text="Почта" />
-            <TextBox Text="{Binding Email}" />
+        <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="10">
+            <TextBlock Text="Почта" FontSize="22" />
+            <TextBox Text="{Binding Email}" FontSize="22" />
         </StackPanel>
 
-        <StackPanel Grid.Column="1" Grid.Row="1">
-            <TextBlock Text="Страна" />
-            <ComboBox ItemsSource="{Binding Countries}" SelectedItem="{Binding CurrCountry}" DisplayMemberPath="CountryName" />
+        <StackPanel Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Margin="10">
+            <TextBlock Text="Страна" FontSize="22" />
+            <ComboBox ItemsSource="{Binding Countries}" SelectedItem="{Binding CurrCountry}" DisplayMemberPath="CountryName" FontSize="22" />
         </StackPanel>
 
-        <Button Grid.Row="2" Content="Ок" Command="{Binding AddClientCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" />
-        <Button Grid.Row="2" Grid.Column="1" Content="Отмена" Command="{Binding NavigateAuthCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" />
+        <Button FontSize="22" Grid.Row="2" Content="Ок" Command="{Binding AddClientCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" Margin="10" />
+        <Button FontSize="22" Grid.Row="2" Grid.Column="1" Content="Отмена" Command="{Binding NavigateAuthCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" Margin="10" />
     </Grid>
 </UserControl>

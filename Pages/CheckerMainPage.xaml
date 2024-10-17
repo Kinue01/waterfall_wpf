@@ -29,14 +29,17 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <StackPanel VerticalAlignment="Center">
+        <StackPanel VerticalAlignment="Center" Margin="10">
             <TextBlock Text="Номер" />
             <TextBox Text="{Binding Ticket, UpdateSourceTrigger=PropertyChanged}" />
         </StackPanel>
 
-        <Button Content="Проверить" Command="{Binding CheckTicketCommand}" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <StackPanel Grid.Row="1" HorizontalAlignment="Center">
+            <Button Margin="50" Content="Проверить" Command="{Binding CheckTicketCommand}" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <TextBlock x:Name="TextBlock" Text="{Binding Result}" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource resStyle}" />
+        </StackPanel>
 
-        <Grid Grid.Column="1" VerticalAlignment="Center">
+        <Grid Grid.Column="1" VerticalAlignment="Center" Grid.RowSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
@@ -66,7 +69,5 @@
                 <TextBlock Text="{Binding Time}" />
             </StackPanel>
         </Grid>
-
-        <TextBlock x:Name="TextBlock" Text="{Binding Result}" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource resStyle}" />
     </Grid>
 </Page>

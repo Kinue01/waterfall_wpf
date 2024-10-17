@@ -12,29 +12,29 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="2*" />
-            <RowDefinition Height="2*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <StackPanel VerticalAlignment="Center">
-            <TextBlock Text="Клиент" />
-            <ComboBox ItemsSource="{Binding Clients}" SelectedItem="{Binding CurrClient}" DisplayMemberPath="ClientLastname" />
+        <StackPanel VerticalAlignment="Center" Margin="10">
+            <TextBlock Text="Клиент" FontSize="22" />
+            <ComboBox FontSize="22" ItemsSource="{Binding Clients}" SelectedItem="{Binding CurrClient}" DisplayMemberPath="ClientLastname" />
         </StackPanel>
 
-        <StackPanel VerticalAlignment="Center" Grid.Column="1">
-            <TextBlock Text="Сеанс" />
-            <ComboBox ItemsSource="{Binding Sessions}" SelectedItem="{Binding CurrSession}" DisplayMemberPath="SessionTime" />
+        <StackPanel VerticalAlignment="Center" Grid.Column="1" Margin="10">
+            <TextBlock Text="Сеанс" FontSize="22" />
+            <ComboBox FontSize="22" ItemsSource="{Binding Sessions}" SelectedItem="{Binding CurrSession}" DisplayMemberPath="SessionTime" ItemStringFormat="HH:mm" />
         </StackPanel>
 
-        <StackPanel VerticalAlignment="Center" Grid.Row="1">
-            <TextBlock Text="Тип" />
-            <ComboBox ItemsSource="{Binding Types}" SelectedItem="{Binding CurrType}" DisplayMemberPath="TypeName" />
+        <StackPanel VerticalAlignment="Center" Grid.Row="1" Margin="10">
+            <TextBlock Text="Тип" FontSize="22" />
+            <ComboBox FontSize="22" ItemsSource="{Binding Types}" SelectedItem="{Binding CurrType}" DisplayMemberPath="TypeName" />
         </StackPanel>
 
-        <StackPanel VerticalAlignment="Center" Grid.Column="1" Grid.Row="1">
-            <TextBlock Text="Дата" />
-            <DatePicker SelectedDate="{Binding Date}" />
+        <StackPanel VerticalAlignment="Center" Grid.Column="1" Grid.Row="1" Margin="10">
+            <TextBlock Text="Дата" FontSize="22" />
+            <DatePicker FontSize="22" SelectedDate="{Binding Date}" />
         </StackPanel>
 
         <Grid Grid.Row="2" Grid.ColumnSpan="2">
@@ -44,9 +44,9 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <Button Content="Добавить" Command="{Binding AddTicketCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" />
-            <Button Content="Отмена" Grid.Column="1" Command="{Binding Cancel}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" />
-            <Button Content="Добавить сотрудника" Command="{Binding NavigateAddClientCommand}" Grid.Column="2" />
+            <Button Margin="10" FontSize="22" Content="Добавить" Command="{Binding AddTicketCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" />
+            <Button Margin="10" FontSize="22" Content="Отмена" Grid.Column="1" Command="{Binding Cancel}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" />
+            <Button Margin="10" FontSize="22" Content="Добавить клиента" Command="{Binding NavigateAddClientCommand}" Grid.Column="2" />
         </Grid>
     </Grid>
 </UserControl>

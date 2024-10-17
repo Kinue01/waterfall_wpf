@@ -66,6 +66,11 @@ namespace waterfall_wpf.ViewModel
 
             AddClientCommand = new AsyncRelayCommand<IDialogWindow>(AddClient);
             NavigateAuthCommand = new RelayCommand<IDialogWindow>(Cancel);
+
+            new Action(async () =>
+            {
+                await GetCountries();
+            })();
         }
 
         async Task GetCountries()
