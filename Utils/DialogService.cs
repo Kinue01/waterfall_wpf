@@ -2,10 +2,8 @@
 {
     public class DialogService : IDialogService
     {
-        public T OpenDialog<T>(DialogViewModelBase<T> vm, DateTime date, TimeOnly time)
+        public T OpenDialog<T>(DialogViewModelBase<T> vm)
         {
-            vm.Date = date;
-            vm.Time = time;
             IDialogWindow window = new DialogWindow
             {
                 DataContext = vm,

@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
-using System.Windows.Input;
 using waterfall_wpf.Model;
 using waterfall_wpf.Utils;
 
@@ -11,7 +10,7 @@ namespace waterfall_wpf.ViewModel
 {
     public class CashierViewModel : ObservableObject
     {
-        ObservableCollection<SessionTable> _sessions = [];
+        ObservableCollection<SessionTable> _sessions;
         INavigationService _navigationService;
         IDbContextFactory<WaterfallDbContext> _dbContextFactory;
         DateTime startDate, endDate, currDate;
@@ -92,8 +91,11 @@ namespace waterfall_wpf.ViewModel
         async Task OpenAddTicket()
         {
             WeakReferenceMessenger.Default.Send(new TimeMessenger(CurrSession.SessionTime));
-            dialogService.OpenDialog(addTicketViewModel, CurrDate, CurrSession.SessionTime);
-            await GetSessions();
+            WeakReferenceMessenger.Default.Send(new DateMessenger(DateOnly.FromDateTime(CurrDate)));
+            if(dialogService.OpenDialog(addTicketViewModel) == DialogResult.OK)
+            {
+                await GetSessions();
+            }
         }
     }
 }

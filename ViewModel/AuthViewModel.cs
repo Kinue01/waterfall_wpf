@@ -50,7 +50,7 @@ namespace waterfall_wpf.ViewModel
                         _navigationService.NavigateTo<CheckerViewModel>();
                         break;
                     default:
-                        MessageBox.Show("Нет такой должности");
+                        MessageBox.Show("Нет такой должности, или пользователь - клиент");
                         break;
                 }
             }

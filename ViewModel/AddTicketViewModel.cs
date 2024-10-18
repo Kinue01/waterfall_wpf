@@ -1,5 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
@@ -21,7 +20,7 @@ namespace waterfall_wpf.ViewModel
         ObservableCollection<TbClient> clients;
         ObservableCollection<TbSession> sessions;
         ObservableCollection<TbTicketType> ticketTypes;
-        DateOnly date;
+        DateTime date;
         TbClient currClientl;
         TbSession currSession;
         TbTicketType currTicketType;
@@ -45,7 +44,7 @@ namespace waterfall_wpf.ViewModel
             get => ticketTypes; 
             set => SetProperty(ref ticketTypes, value);
         }
-        public DateOnly CurrDate
+        public DateTime CurrDate
         {
             get => date; 
             set => SetProperty(ref date, value);
@@ -77,7 +76,6 @@ namespace waterfall_wpf.ViewModel
             encoder.QRCodeScale = 8;
             this.dialogService = dialogService;
             this.addClientViewModel = addClientViewModel;
-            CurrDate = DateOnly.FromDateTime(Date);
 
             AddTicketCommand = new AsyncRelayCommand<IDialogWindow>(AddTicket);
             NavigateAddClientCommand = new AsyncRelayCommand(OpenAddClient);
@@ -86,6 +84,10 @@ namespace waterfall_wpf.ViewModel
             WeakReferenceMessenger.Default.Register<TimeMessenger>(this, (r, m) =>
             {
                 CurrSession = Sessions.Where(s => s.SessionTime == m.Value).FirstOrDefault();
+            });
+            WeakReferenceMessenger.Default.Register<DateMessenger>(this, (r, m) =>
+            {
+                CurrDate = DateTime.Parse(m.Value.ToString());
             });
 
             new Action(async () =>
@@ -132,12 +134,12 @@ namespace waterfall_wpf.ViewModel
             await context.TbTickets.AddAsync(new TbTicket
             {
                 TicketClientId = CurrClient.ClientId,
-                TicketDate = CurrDate,
+                TicketDate = DateOnly.FromDateTime(CurrDate),
                 TicketSessionId = CurrSession.SessionId,
                 TicketTypeId = CurrType.TypeId
             });
             await context.SaveChangesAsync();
-            var ticket = await context.TbTickets.LastOrDefaultAsync();
+            var ticket = await context.TbTickets.OrderBy(t => t.TicketId).LastOrDefaultAsync();
             Bitmap bitmap = encoder.Encode(ticket.TicketId.ToString());
 
             string qrCodeFileName = "img.png";
@@ -149,16 +151,16 @@ namespace waterfall_wpf.ViewModel
             BaseFont baseFont = BaseFont.CreateFont(@"C:\Windows\Fonts\arial.ttf", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
             iTextSharp.text.Font font = new(baseFont, iTextSharp.text.Font.DEFAULTSIZE, iTextSharp.text.Font.NORMAL);
 
-            iTextSharp.text.Paragraph newId = new(ticket.TicketId.ToString(), font);
-            iTextSharp.text.Paragraph newPar = new(CurrClient.ClientLastname + " " + CurrClient.ClientFirstname + " " + CurrClient.ClientMiddlename, font);
-            iTextSharp.text.Paragraph newParagraph = new(Date.ToString(), font);
+            iTextSharp.text.Paragraph newFio = new(CurrClient.ClientLastname + " " + CurrClient.ClientFirstname + " " + CurrClient.ClientMiddlename, font);
+            iTextSharp.text.Paragraph newDate = new(DateOnly.FromDateTime(CurrDate).ToString(), font);
+            iTextSharp.text.Paragraph newTime = new(CurrSession.SessionTime.ToShortTimeString(), font);
 
             bitmap.Save(qrCodeFileName, System.Drawing.Imaging.ImageFormat.Png);
             iTextSharp.text.Image imageQR = iTextSharp.text.Image.GetInstance(qrCodeFileName);
 
-            doc.Add(newId);
-            doc.Add(newPar);
-            doc.Add(newParagraph);
+            doc.Add(newFio);
+            doc.Add(newDate);
+            doc.Add(newTime);
             doc.Add(imageQR);
             doc.Close();
 
@@ -173,7 +175,7 @@ namespace waterfall_wpf.ViewModel
         }
         async Task OpenAddClient()
         {
-            if (dialogService.OpenDialog(addClientViewModel, DateTime.MinValue, TimeOnly.MinValue) == DialogResult.OK)
+            if (dialogService.OpenDialog(addClientViewModel) == DialogResult.OK)
             {
                 await GetClients();
             }

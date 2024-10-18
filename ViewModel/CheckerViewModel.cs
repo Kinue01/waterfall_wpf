@@ -63,19 +63,10 @@ namespace waterfall_wpf.ViewModel
                 Date = res[0].TicketDate.ToDateTime(TimeOnly.MinValue);
                 Time = res[0].TicketSession.SessionTime;
 
-                if (res[0].TicketChecked)
-                {
-                    Result = "Проход запрещён";
-                }
-                else
+                if (res[0].TicketDate == DateOnly.FromDateTime(DateTime.Now) && TimeOnly.FromTimeSpan(res[0].TicketSession.SessionTime - TimeOnly.FromDateTime(DateTime.Now)) < TimeOnly.Parse("10:00") && !res[0].TicketChecked)
                 {
                     Result = "Проход разрешён";
                     await context.TbTickets.Where(t => t.TicketId == int.Parse(Ticket)).ExecuteUpdateAsync(s => s.SetProperty(u => u.TicketChecked, true));
-                }
-
-                if (res[0].TicketDate == DateOnly.FromDateTime(DateTime.Now) && TimeOnly.FromTimeSpan(res[0].TicketSession.SessionTime - TimeOnly.FromDateTime(DateTime.Now)) < TimeOnly.Parse("10:00"))
-                {
-                    Result = "Проход разрешён";
                 }
                 else
                 {

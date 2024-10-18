@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:waterfall_wpf.Pages"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      Height="350" Width="350"
       Title="CheckerMainPage">
     <Page.Resources>
         <Style x:Key="resStyle" TargetType="TextBlock">
@@ -30,12 +30,12 @@
         </Grid.RowDefinitions>
 
         <StackPanel VerticalAlignment="Center" Margin="10">
-            <TextBlock Text="Номер" />
+            <TextBlock Text="Номер билета: " />
             <TextBox Text="{Binding Ticket, UpdateSourceTrigger=PropertyChanged}" />
         </StackPanel>
 
         <StackPanel Grid.Row="1" HorizontalAlignment="Center">
-            <Button Margin="50" Content="Проверить" Command="{Binding CheckTicketCommand}" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <Button Margin="50" Content="Проверить" Command="{Binding CheckTicketCommand}" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="10" />
             <TextBlock x:Name="TextBlock" Text="{Binding Result}" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource resStyle}" />
         </StackPanel>
 
@@ -49,24 +49,24 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <StackPanel>
-                <TextBlock Text="Фамилия" />
+            <StackPanel Margin="10">
+                <TextBlock Text="Фамилия: " />
                 <TextBlock Text="{Binding Lastname}" />
             </StackPanel>
 
-            <StackPanel Grid.Column="1">
-                <TextBlock Text="Имя" />
+            <StackPanel Grid.Column="1" Margin="10">
+                <TextBlock Text="Имя: " />
                 <TextBlock Text="{Binding Firstname}" />
             </StackPanel>
 
-            <StackPanel Grid.Row="1">
-                <TextBlock Text="Дата" />
-                <TextBlock Text="{Binding Date}" />
+            <StackPanel Grid.Row="1" Margin="10">
+                <TextBlock Text="Дата: " />
+                <TextBlock Text="{Binding StringFormat=dd.MM.yyyy, Path=Date}"  />
             </StackPanel>
 
-            <StackPanel Grid.Column="1" Grid.Row="1">
-                <TextBlock Text="Время" />
-                <TextBlock Text="{Binding Time}" />
+            <StackPanel Grid.Column="1" Grid.Row="1" Margin="10">
+                <TextBlock Text="Время: " />
+                <TextBlock Text="{Binding StringFormat=HH:mm:ss, Path=Time}" />
             </StackPanel>
         </Grid>
     </Grid>

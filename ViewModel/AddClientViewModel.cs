@@ -92,6 +92,7 @@ namespace waterfall_wpf.ViewModel
                 UserPass = Password,
                 UserRoleId = 1
             });
+            await context.SaveChangesAsync();
             await context.TbClients.AddAsync(new TbClient
             {
                 ClientCountryId = CurrCountry.CountryId,

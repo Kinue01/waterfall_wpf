@@ -2,6 +2,7 @@
 using MessagingToolkit.QRCode.Codec;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using System.Text;
 using System.Windows;
 using waterfall_wpf.Model;
 using waterfall_wpf.Utils;
@@ -17,6 +18,7 @@ namespace waterfall_wpf
         readonly ServiceProvider serviceProvider;
         public App()
         {
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             ServiceCollection services = new();
 
             services.AddSingleton(provider => new MainWindow
