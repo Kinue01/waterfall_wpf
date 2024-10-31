@@ -19,7 +19,22 @@
 
         <StackPanel VerticalAlignment="Center" Margin="10">
             <TextBlock Text="Клиент" FontSize="22" />
-            <ComboBox FontSize="22" ItemsSource="{Binding Clients}" SelectedItem="{Binding CurrClient}" DisplayMemberPath="ClientLastname" />
+            <ComboBox FontSize="22" ItemsSource="{Binding Clients}" SelectedItem="{Binding CurrClient}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock>
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="{}{0} {1} {2} ({3})">
+                                    <Binding Path="ClientLastname" />
+                                    <Binding Path="ClientFirstname" />
+                                    <Binding Path="ClientMiddlename" />
+                                    <Binding Path="ClientEmail" />
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
         </StackPanel>
 
         <StackPanel VerticalAlignment="Center" Grid.Column="1" Margin="10">
@@ -34,7 +49,7 @@
 
         <StackPanel VerticalAlignment="Center" Grid.Column="1" Grid.Row="1" Margin="10">
             <TextBlock Text="Дата" FontSize="22" />
-            <DatePicker FontSize="22" SelectedDate="{Binding Date}" />
+            <DatePicker FontSize="22" SelectedDate="{Binding CurrDate}" />
         </StackPanel>
 
         <Grid Grid.Row="2" Grid.ColumnSpan="2">

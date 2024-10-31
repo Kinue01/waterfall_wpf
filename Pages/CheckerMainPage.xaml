@@ -35,7 +35,7 @@
         </StackPanel>
 
         <StackPanel Grid.Row="1" HorizontalAlignment="Center">
-            <Button Margin="50" Content="Проверить" Command="{Binding CheckTicketCommand}" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="10" />
+            <Button Margin="30" Content="Проверить" Command="{Binding CheckTicketCommand}" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="10" />
             <TextBlock x:Name="TextBlock" Text="{Binding Result}" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource resStyle}" />
         </StackPanel>
 

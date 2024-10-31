@@ -143,7 +143,7 @@ namespace waterfall_wpf.ViewModel
             Bitmap bitmap = encoder.Encode(ticket.TicketId.ToString());
 
             string qrCodeFileName = "img.png";
-            string pathToReport = @"C:\Users\student\myTest.pdf";
+            string pathToReport = @"C:\Users\tverd\myTest.pdf";
             Document doc = new();
             PdfWriter.GetInstance(doc, new FileStream(pathToReport, FileMode.Create));
             doc.Open();
@@ -151,13 +151,15 @@ namespace waterfall_wpf.ViewModel
             BaseFont baseFont = BaseFont.CreateFont(@"C:\Windows\Fonts\arial.ttf", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
             iTextSharp.text.Font font = new(baseFont, iTextSharp.text.Font.DEFAULTSIZE, iTextSharp.text.Font.NORMAL);
 
-            iTextSharp.text.Paragraph newFio = new(CurrClient.ClientLastname + " " + CurrClient.ClientFirstname + " " + CurrClient.ClientMiddlename, font);
-            iTextSharp.text.Paragraph newDate = new(DateOnly.FromDateTime(CurrDate).ToString(), font);
-            iTextSharp.text.Paragraph newTime = new(CurrSession.SessionTime.ToShortTimeString(), font);
+            iTextSharp.text.Paragraph newFio = new("ФИО: " + CurrClient.ClientLastname + " " + CurrClient.ClientFirstname + " " + CurrClient.ClientMiddlename, font);
+            iTextSharp.text.Paragraph newDate = new("Дата: " + DateOnly.FromDateTime(CurrDate).ToString(), font);
+            iTextSharp.text.Paragraph newTime = new("Время: " + CurrSession.SessionTime.ToShortTimeString(), font);
+            iTextSharp.text.Paragraph newTicketNum = new("Номер билета: " + ticket.TicketId.ToString(), font);
 
             bitmap.Save(qrCodeFileName, System.Drawing.Imaging.ImageFormat.Png);
             iTextSharp.text.Image imageQR = iTextSharp.text.Image.GetInstance(qrCodeFileName);
 
+            doc.Add(newTicketNum);
             doc.Add(newFio);
             doc.Add(newDate);
             doc.Add(newTime);
